@@ -13,6 +13,12 @@ If you haven't already, we need to install Docker:
 brew install docker
 ```
 
+
+**This wont do the trick, follow this [tutorial on Medium](https://medium.com/@yutafujii_59175/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3) for a full overview.**
+
+
+
+
 ## Dockerize our application
 
 Now we're going to package our application as a Docker image. Add a Dockerfile to the module root, alongside the pom.xml:
@@ -45,7 +51,10 @@ docker run -p 8081:8080 shopping-list:0.0.1-SNAPSHOT
 
 Verify it's up and running:
 
-http://localhost:8081/actuator/health
+~~http://localhost:8081/actuator/health~~
+
+* Check the IP address of the default container: `docker-machine ls`
+* Try to consult it: http://192.168.99.100:8081/actuator/health (if 192.168.99.100 is the IP)
 
 A deep understanding of Docker is not needed for now, but try to research what is actually going on while running these commands.
 
