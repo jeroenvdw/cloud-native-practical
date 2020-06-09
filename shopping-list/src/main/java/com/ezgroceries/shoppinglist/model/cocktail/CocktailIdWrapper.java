@@ -1,4 +1,4 @@
-package com.ezgroceries.shoppinglist.cocktail.model;
+package com.ezgroceries.shoppinglist.model.cocktail;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;

@@ -1,6 +1,6 @@
-package com.ezgroceries.shoppinglist.cocktail.model;
+package com.ezgroceries.shoppinglist.model.cocktail;
 
-import com.ezgroceries.shoppinglist.cocktail.external.CocktailDBResponse;
+import com.ezgroceries.shoppinglist.external.CocktailDBResponse;
 import java.util.List;
 import java.util.UUID;
 

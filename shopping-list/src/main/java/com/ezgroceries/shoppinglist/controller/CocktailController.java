@@ -1,8 +1,8 @@
-package com.ezgroceries.shoppinglist.cocktail.controller;
+package com.ezgroceries.shoppinglist.controller;
 
-import com.ezgroceries.shoppinglist.cocktail.external.CocktailDBClient;
-import com.ezgroceries.shoppinglist.cocktail.external.CocktailDBResponse;
-import com.ezgroceries.shoppinglist.cocktail.model.CocktailResource;
+import com.ezgroceries.shoppinglist.external.CocktailDBClient;
+import com.ezgroceries.shoppinglist.external.CocktailDBResponse;
+import com.ezgroceries.shoppinglist.model.cocktail.CocktailResource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/cocktails", produces = "application/json")
 public class CocktailController {
-
     @Autowired
     private CocktailDBClient cocktailDBClient;
 
