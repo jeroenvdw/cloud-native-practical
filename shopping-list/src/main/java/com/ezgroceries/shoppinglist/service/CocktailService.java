@@ -27,6 +27,10 @@ public class CocktailService {
 
     public List<CocktailResource> getCocktails(String search) {
         CocktailDBResponse cocktailDBResponse = cocktailDBClient.searchCocktails(search);
+        if(cocktailDBResponse.getDrinks() == null) {
+            //return empty list when a cocktail is not found
+            return new ArrayList<>();
+        }
         return mergeCocktails(cocktailDBResponse.getDrinks());
         /*
         List<CocktailResource> cocktails = new ArrayList<>();
