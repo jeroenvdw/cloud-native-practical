@@ -4,6 +4,7 @@ import com.ezgroceries.shoppinglist.database.CocktailRepository;
 import com.ezgroceries.shoppinglist.database.entities.CocktailEntity;
 import com.ezgroceries.shoppinglist.external.CocktailDBClient;
 import com.ezgroceries.shoppinglist.external.CocktailDBResponse;
+import com.ezgroceries.shoppinglist.external.CocktailDBResponse.DrinkResource;
 import com.ezgroceries.shoppinglist.model.cocktail.CocktailResource;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +33,23 @@ public class CocktailService {
             return new ArrayList<>();
         }
         return mergeCocktails(cocktailDBResponse.getDrinks());
-        /*
-        List<CocktailResource> cocktails = new ArrayList<>();
-        for(CocktailDBResponse.DrinkResource drinkResource : cocktailDBResponse.getDrinks()) {
-            cocktails.add(new CocktailResource(drinkResource));
-        }
-        return cocktails;
-         */
     }
 
-    public List<CocktailResource> mergeCocktails(List<CocktailDBResponse.DrinkResource> drinks) {
+    public CocktailResource getCocktailByUuid(String cocktailUuid) {
+        //search on local database (as we search on our own uuid, it must be in the db already)
+        CocktailEntity cocktailEntity = cocktailRepository.findById(UUID.fromString(cocktailUuid)).get();
+        //get details out of external api
+        CocktailDBResponse cocktailDBResponse = cocktailDBClient.searchCocktailById(cocktailEntity.getIdDrink());
+        DrinkResource drinkResource = cocktailDBResponse.getDrinks().get(0);
+        return new CocktailResource(cocktailEntity.getId(),
+                cocktailEntity.getName(),
+                drinkResource.getStrGlass(),
+                drinkResource.getStrInstructions(),
+                drinkResource.getStrDrinkThumb(),
+                drinkResource.getAllIngredients());
+    }
+
+    private List<CocktailResource> mergeCocktails(List<CocktailDBResponse.DrinkResource> drinks) {
         //Get all the idDrink attributes
         List<String> ids = drinks.stream().map(CocktailDBResponse.DrinkResource::getIdDrink).collect(Collectors.toList());
 

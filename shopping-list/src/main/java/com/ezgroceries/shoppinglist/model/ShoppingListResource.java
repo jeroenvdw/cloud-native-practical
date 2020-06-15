@@ -11,6 +11,11 @@ public class ShoppingListResource extends ShoppingList {
         this.shoppingListId = UUID.randomUUID();
     }
 
+    public ShoppingListResource(UUID uuid, String name) {
+        super(name);
+        this.shoppingListId = uuid;
+    }
+
     public String getShoppingListId() {
         return shoppingListId.toString();
     }
