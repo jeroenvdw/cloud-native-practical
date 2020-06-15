@@ -1,13 +1,13 @@
-package com.ezgroceries.shoppinglist.model.cocktail;
+package com.ezgroceries.shoppinglist.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-public class CocktailIdWrapper {
+public class CocktailIdDto {
 
     private UUID cocktailId;
 
-    public CocktailIdWrapper(@JsonProperty("cocktailId") String cocktailId) {
+    public CocktailIdDto(@JsonProperty("cocktailId") String cocktailId) {
         this.cocktailId = UUID.fromString(cocktailId);;
     }
 

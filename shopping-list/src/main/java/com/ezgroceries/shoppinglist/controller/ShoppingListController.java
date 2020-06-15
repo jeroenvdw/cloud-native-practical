@@ -1,9 +1,9 @@
 package com.ezgroceries.shoppinglist.controller;
 
-import com.ezgroceries.shoppinglist.model.cocktail.CocktailIdWrapper;
+import com.ezgroceries.shoppinglist.dto.CocktailIdDto;
 import com.ezgroceries.shoppinglist.model.ShoppingList;
 import com.ezgroceries.shoppinglist.model.ShoppingListResource;
-import com.ezgroceries.shoppinglist.model.cocktail.CocktailResource;
+import com.ezgroceries.shoppinglist.model.CocktailResource;
 import com.ezgroceries.shoppinglist.service.ShoppingListService;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,12 +34,12 @@ public class ShoppingListController {
     }
 
     @PostMapping("/shopping-lists/{uuid}/cocktails")
-    public List<CocktailIdWrapper> addCocktailToShoppingList(@RequestBody List<CocktailIdWrapper> cocktails, @PathVariable("uuid") String uuid) {
+    public List<CocktailIdDto> addCocktailToShoppingList(@RequestBody List<CocktailIdDto> cocktails, @PathVariable("uuid") String uuid) {
         ShoppingListResource shoppingListResource = getShoppingList(uuid);
-        List<CocktailIdWrapper> cocktailIds = new ArrayList<>();
-        for(CocktailIdWrapper cocktailId : cocktails) {
+        List<CocktailIdDto> cocktailIds = new ArrayList<>();
+        for(CocktailIdDto cocktailId : cocktails) {
             CocktailResource cocktailResource = shoppingListService.addCocktailToShoppingList(cocktailId.getCocktailId(), shoppingListResource);
-            cocktailIds.add(new CocktailIdWrapper(cocktailResource.getCocktailId()));
+            cocktailIds.add(new CocktailIdDto(cocktailResource.getCocktailId()));
         }
         return cocktailIds;
     }

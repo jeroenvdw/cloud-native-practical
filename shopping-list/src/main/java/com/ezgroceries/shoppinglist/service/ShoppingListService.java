@@ -5,7 +5,7 @@ import com.ezgroceries.shoppinglist.database.entities.CocktailShoppingListEntity
 import com.ezgroceries.shoppinglist.database.entities.ShoppingListEntity;
 import com.ezgroceries.shoppinglist.model.ShoppingListResource;
 import com.ezgroceries.shoppinglist.database.ShoppingListRepository;
-import com.ezgroceries.shoppinglist.model.cocktail.CocktailResource;
+import com.ezgroceries.shoppinglist.model.CocktailResource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.ezgroceries.shoppinglist.model.cocktail;
+package com.ezgroceries.shoppinglist.model;
 
 import java.util.List;
 
