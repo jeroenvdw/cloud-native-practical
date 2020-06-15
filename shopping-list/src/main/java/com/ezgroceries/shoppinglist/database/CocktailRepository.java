@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CocktailRepository extends JpaRepository<CocktailEntity, UUID> {
     Set<CocktailEntity> findByIdDrinkIn(List<String> ids);
+    List<CocktailEntity> findByNameContainingIgnoreCase(String search);
 }
