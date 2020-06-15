@@ -39,6 +39,15 @@ public class ShoppingListService {
         return new ShoppingListResource(shoppingListEntity.getId(), shoppingListEntity.getName());
     }
 
+    public List<ShoppingListResource> getAllShoppingLists() {
+        List<ShoppingListEntity> shoppingListEntities = shoppingListRepository.findAll();
+        List<ShoppingListResource> shoppingListResources = new ArrayList<>();
+        for(ShoppingListEntity shoppingListEntity : shoppingListEntities) {
+            shoppingListResources.add(new ShoppingListResource(shoppingListEntity.getId(), shoppingListEntity.getName()));
+        }
+        return shoppingListResources;
+    }
+
     public List<CocktailResource> addCocktailsToShoppingList(List<String> cocktailIds, ShoppingListResource shoppingListResource) {
         List<CocktailResource> cocktailResources = new ArrayList<>();
         for(String cocktailId : cocktailIds) {

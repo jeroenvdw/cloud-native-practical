@@ -52,11 +52,6 @@ public class ShoppingListController {
 
     @GetMapping("/shopping-lists")
     public List<ShoppingListResource> getAllShoppingLists() {
-        //creating dummy lists
-        ShoppingListResource shoppingListResource1 = new ShoppingListResource("Dummy List");
-        shoppingListResource1.setIngredients(Arrays.asList("Tequila", "Triple Sec", "Salt"));
-        ShoppingListResource shoppingListResource2 = new ShoppingListResource("Dummy List 2");
-        shoppingListResource2.setIngredients(Arrays.asList("Tequilq", "Vodka", "Beer"));
-        return Arrays.asList(shoppingListResource1,shoppingListResource2);
+        return shoppingListService.getAllShoppingLists();
     }
 }
