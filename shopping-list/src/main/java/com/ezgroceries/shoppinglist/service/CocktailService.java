@@ -7,6 +7,8 @@ import com.ezgroceries.shoppinglist.service.external.CocktailDBResponse;
 import com.ezgroceries.shoppinglist.service.external.CocktailDBResponse.DrinkResource;
 import com.ezgroceries.shoppinglist.model.CocktailResource;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -38,15 +40,12 @@ public class CocktailService {
     public CocktailResource getCocktailByUuid(String cocktailUuid) {
         //search on local database (as we search on our own uuid, it must be in the db already)
         CocktailEntity cocktailEntity = cocktailRepository.findById(UUID.fromString(cocktailUuid)).get();
-        //get details out of external api
-        CocktailDBResponse cocktailDBResponse = cocktailDBClient.searchCocktailById(cocktailEntity.getIdDrink());
-        DrinkResource drinkResource = cocktailDBResponse.getDrinks().get(0);
         return new CocktailResource(cocktailEntity.getId(),
                 cocktailEntity.getName(),
-                drinkResource.getStrGlass(),
-                drinkResource.getStrInstructions(),
-                drinkResource.getStrDrinkThumb(),
-                drinkResource.getAllIngredients());
+                cocktailEntity.getGlass(),
+                cocktailEntity.getInstructions(),
+                cocktailEntity.getImageLink(),
+                new ArrayList<>(cocktailEntity.getIngredients()));
     }
 
     private List<CocktailResource> mergeCocktails(List<CocktailDBResponse.DrinkResource> drinks) {
@@ -64,6 +63,10 @@ public class CocktailService {
                 newCocktailEntity.setId(UUID.randomUUID());
                 newCocktailEntity.setIdDrink(drinkResource.getIdDrink());
                 newCocktailEntity.setName(drinkResource.getStrDrink());
+                newCocktailEntity.setGlass(drinkResource.getStrGlass());
+                newCocktailEntity.setImageLink(drinkResource.getStrDrinkThumb());
+                newCocktailEntity.setInstructions(drinkResource.getStrInstructions());
+                newCocktailEntity.setIngredients(new HashSet<>(drinkResource.getAllIngredients()));
                 cocktailEntity = cocktailRepository.save(newCocktailEntity);
             }
             return cocktailEntity;
