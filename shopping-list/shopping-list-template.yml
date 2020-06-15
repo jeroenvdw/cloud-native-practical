@@ -1,0 +1,112 @@
+kind: DeploymentConfig
+apiVersion: v1
+metadata:
+  name: shopping-list-deployment
+  annotations:
+    version: 0.0.1-SNAPSHOT
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: shopping-list
+        component: shopping-list
+        app: shopping-list
+    spec:
+      containers:
+        - name: shopping-list
+          image: jeroentwee/shopping-list:0.0.1-SNAPSHOT
+          ports:
+            - containerPort: 8080
+            - containerPort: 8443
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: hsqldb
+          lifecycle:
+            preStop:
+              exec:
+                # SIGTERM triggers a quick exit; gracefully terminate instead
+                command: ["kill", "-SIGINT", "`pidof java`"]
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 3
+
+#---
+#apiVersion: "v1"
+#kind: "LimitRange"
+#metadata:
+#  name: "core-resource-limits"
+#spec:
+#  limits:
+#    - type: "Pod"
+#      max:
+#        cpu: "2"
+#        memory: "1Gi"
+#      min:
+#        cpu: "200m"
+#        memory: "6Mi"
+#    - type: "Container"
+#      max:
+#        cpu: "2"
+#        memory: "1Gi"
+#      min:
+#        cpu: "100m"
+#        memory: "4Mi"
+#      default:
+#        cpu: "300m"
+#        memory: "200Mi"
+#      defaultRequest:
+#        cpu: "200m"
+#        memory: "100Mi"
+#      maxLimitRequestRatio:
+#        cpu: "10"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: shopping-list-service
+spec:
+  selector:
+    app: shopping-list
+  ports:
+    - name: httpport
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+    - name: httpsport
+      protocol: TCP
+      port: 443
+      targetPort: 8443
+  type: LoadBalancer
+---
+kind: Route
+apiVersion: v1
+metadata:
+  name: shopping-list-route
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: shopping-list-service
+
+
+# web panel: https://openshift-workshop.gluo.io:8443/console/catalog
+
+# docker image build -t jeroentwee/shopping-list:0.0.1-SNAPSHOT .
+# docker image push
+
+# oc login
+# oc get projects
+# oc new-project shopping-list-jeroenvdw
+# oc apply -f shopping-list-template.yml
+
+# test: http://shopping-list-route-shopping-list-jeroenvdw.apps.openshift-workshop.gluo.io/cocktails?search=bloody
